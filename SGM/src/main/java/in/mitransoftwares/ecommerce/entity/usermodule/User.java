@@ -1,18 +1,23 @@
 package in.mitransoftwares.ecommerce.entity.usermodule;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+
+import in.mitransoftwares.ecommerce.entity.security.UserToken;
 
 
 @Entity
@@ -23,7 +28,7 @@ public class User {
 	public User(){}
 	
 	
-	private Long userId;
+	private Long userId;	
 	private String userName;
 	private String password;
 	private String email;
@@ -33,7 +38,8 @@ public class User {
 	private Date createdDate;
 	private Date lastLogin;
 	
-	private UserRole userRole;
+	private Set<UserRole> userRoles;
+	private Set<UserToken> userTokens;
 	
 	
 	@Id
@@ -105,13 +111,28 @@ public class User {
 		this.lastLogin = lastLogin;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name = "user_role_id", nullable =false)
-	public UserRole getUserRole() {
-		return userRole;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "users_role_mapping",joinColumns = { 
+			@JoinColumn(name = "user_id", updatable = true) }, 
+			inverseJoinColumns = { @JoinColumn(name = "user_role_id", 
+					 updatable = true) })
+	public Set<UserRole> getUserRoles() {
+		return userRoles;
 	}
-	public void setUserRole(UserRole userRole) {
-		this.userRole = userRole;
+	public void setUserRoles(Set<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "user_tokens_mapping",joinColumns = { 
+			@JoinColumn(name = "user_id", updatable = true) }, 
+			inverseJoinColumns = { @JoinColumn(name = "user_token_id", 
+					 updatable = true) })
+	public Set<UserToken> getUserTokens() {
+		return userTokens;
+	}
+	public void setUserTokens(Set<UserToken> userTokens) {
+		this.userTokens = userTokens;
 	}
 	
 	

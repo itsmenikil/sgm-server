@@ -1,6 +1,7 @@
 package in.mitransoftwares.ecommerce.controller.usermodule;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +30,7 @@ public class UserController {
 		return userService.userByUserId(id);
 	}
 	
+	@PreAuthorize("hasAuthority('P5')")
 	@RequestMapping(method=RequestMethod.GET)
 	public User dummyUser(){
 		User user =new User();

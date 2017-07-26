@@ -19,6 +19,15 @@ import in.mitransoftwares.ecommerce.entity.customer.Customer;
 public class Store {
 
 	
+	public Store(Long storeId, String storeName, String storeUrl, String storeLogoPath) {
+		this.storeId = storeId;
+		this.storeName = storeName;
+		this.storeUrl = storeUrl;
+		this.storeLogoPath = storeLogoPath;
+	}
+	
+	Store() {}
+	
 	private Long storeId;
 	private String storeName;
 	private String storeUrl;
